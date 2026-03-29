@@ -1,0 +1,6 @@
+---
+- name: Restart mariadb
+  community.docker.docker_compose_v2:
+    project_src: "{{ mariadb_compose_dir }}"
+    state: present
+    restarted: true

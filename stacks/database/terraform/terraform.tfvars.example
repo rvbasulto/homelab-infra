@@ -1,0 +1,33 @@
+# ============================================================
+# VALORES NO SENSIBLES — commitear este archivo es seguro
+# ============================================================
+# Copiar a terraform.tfvars (gitignored) para desarrollo local.
+# En CI / Terraform Cloud, definir TODAS las variables directamente
+# en el workspace (sin necesidad de terraform.tfvars).
+
+proxmox_api_url      = "https://pve04.home.lab:8006/api2/json"
+proxmox_api_token_id = "terraform@pve!terraform"
+proxmox_tls_insecure = true
+proxmox_node         = "pve04"
+
+lxc_template = "local:vztmpl/ubuntu-25.04-standard_25.04-1.1_amd64.tar.zst"
+
+mariadb_ip = "192.168.1.60"
+gateway    = "192.168.1.1"
+storage    = "local-lvm"
+
+# Pass 2 — sin secrets, solo el flag y la lista de DBs
+# provision_databases = true
+# databases = [
+#   { name = "nextcloud", user = "nextcloud", password = "ver TF Cloud" }
+# ]
+
+# ============================================================
+# VARIABLES SENSIBLES — definir en Terraform Cloud workspace
+# (Settings → Variables → + Add variable → marcar "Sensitive")
+# ============================================================
+# proxmox_api_token_secret  → secret del API token de Proxmox
+# lxc_root_password         → password root del LXC
+# ssh_public_key            → clave pública SSH
+# mariadb_root_password     → password root de MariaDB (Pass 2)
+# databases[*].password     → passwords de usuarios de BD (Pass 2)

@@ -1,0 +1,6 @@
+creation_rules:
+  # Encrypts all group_vars/all.yml files across stacks with age.
+  # Replace with your actual age public key (age-keygen -o ~/.config/sops/age/keys.txt).
+  - path_regex: stacks/.*/ansible/group_vars/all\.yml$
+    age: >-
+      age12ftfkjfq9pdfk0h986sm9m3fgqy23mt5pf9hqda8tqjn3tvjyszs8h8kx9

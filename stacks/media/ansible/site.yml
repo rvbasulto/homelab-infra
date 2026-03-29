@@ -1,0 +1,8 @@
+---
+- name: Configure media host
+  hosts: media
+  become: true
+
+  roles:
+    - role: docker
+    - role: nextcloud

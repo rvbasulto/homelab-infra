@@ -1,0 +1,6 @@
+---
+mariadb_root_password: "changeme"
+mariadb_data_dir: "/opt/mariadb/data"
+mariadb_port: 3306
+mariadb_image: "mariadb:11"
+mariadb_compose_dir: "/opt/mariadb"

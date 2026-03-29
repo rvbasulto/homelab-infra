@@ -1,0 +1,14 @@
+# Terraform — credentials and state (never commit these)
+**/terraform/terraform.tfvars
+**/terraform/terraform.tfstate
+**/terraform/terraform.tfstate.backup
+**/terraform/.terraform/
+**/terraform/.terraform.lock.hcl
+
+# Ansible — group_vars encrypted with SOPS (safe to commit once encrypted).
+# Do NOT commit a plaintext all.yml. Encrypt first: sops --encrypt --in-place group_vars/all.yml
+# Plaintext backups or unencrypted copies:
+**/ansible/group_vars/all.yml.plain
+
+# OS
+.DS_Store

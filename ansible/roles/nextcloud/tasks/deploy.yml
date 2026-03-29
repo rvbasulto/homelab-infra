@@ -1,0 +1,26 @@
+---
+- name: Create Nextcloud directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ nextcloud_compose_dir }}"
+    - "{{ nextcloud_data_dir }}"
+
+- name: Render docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ nextcloud_compose_dir }}/docker-compose.yml"
+    mode: "0640"
+  notify: Restart nextcloud
+
+- name: Pull Nextcloud image
+  community.docker.docker_image:
+    name: "{{ nextcloud_image }}"
+    source: pull
+
+- name: Start Nextcloud via docker compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ nextcloud_compose_dir }}"
+    state: present

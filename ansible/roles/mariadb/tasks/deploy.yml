@@ -1,0 +1,26 @@
+---
+- name: Create MariaDB directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - "{{ mariadb_compose_dir }}"
+    - "{{ mariadb_data_dir }}"
+
+- name: Render docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ mariadb_compose_dir }}/docker-compose.yml"
+    mode: "0640"
+  notify: Restart mariadb
+
+- name: Pull MariaDB image
+  community.docker.docker_image:
+    name: "{{ mariadb_image }}"
+    source: pull
+
+- name: Start MariaDB via docker compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ mariadb_compose_dir }}"
+    state: present

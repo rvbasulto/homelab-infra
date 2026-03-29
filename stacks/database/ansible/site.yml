@@ -1,0 +1,8 @@
+---
+- name: Configure database host
+  hosts: database
+  become: true
+
+  roles:
+    - role: docker
+    - role: mariadb

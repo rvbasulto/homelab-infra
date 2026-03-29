@@ -1,0 +1,10 @@
+---
+- name: Wait for Nextcloud to respond on status.php
+  uri:
+    url: "http://localhost:{{ nextcloud_port }}/status.php"
+    method: GET
+    status_code: 200
+  register: nc_status
+  until: nc_status.status == 200 and (nc_status.json.installed | default(false))
+  retries: 30
+  delay: 15

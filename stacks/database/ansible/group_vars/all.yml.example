@@ -1,0 +1,13 @@
+# Workflow SOPS:
+#   1. cp all.yml.example all.yml
+#   2. Rellena los valores reales
+#   3. sops --encrypt --in-place all.yml   ← cifra el archivo in-place
+#   4. git add all.yml                     ← seguro: está cifrado con age
+#
+# Para editar después: sops all.yml  (abre en $EDITOR, guarda cifrado)
+# La clave age se carga desde: $SOPS_AGE_KEY_FILE (default: ~/.config/sops/age/keys.txt)
+
+# MariaDB role variables
+mariadb_root_password: "changeme"
+mariadb_data_dir: "/opt/mariadb/data"
+mariadb_port: 3306

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /home/rvbasulto/Projects/proxmox-k3s-lab /home/rvbasulto/Projects/technitium-dns -name backend.tf -o -name *.tfvars)",
+      "Bash(xargs ls:*)"
+    ]
+  }
+}

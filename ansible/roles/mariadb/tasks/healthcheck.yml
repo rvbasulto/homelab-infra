@@ -1,0 +1,10 @@
+---
+- name: Wait for MariaDB to be healthy
+  community.docker.docker_container_info:
+    name: mariadb
+  register: container_info
+  until: >
+    container_info.container is defined and
+    container_info.container.State.Health.Status == 'healthy'
+  retries: 20
+  delay: 10
