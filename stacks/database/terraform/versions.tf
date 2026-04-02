@@ -10,8 +10,8 @@ terraform {
 
   required_providers {
     proxmox = {
-      source  = "telmate/proxmox"
-      version = "3.0.2-rc04"
+      source  = "bpg/proxmox"
+      version = "~> 0.66"
     }
     mysql = {
       source  = "petoju/mysql"

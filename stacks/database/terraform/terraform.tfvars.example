@@ -1,33 +1,33 @@
 # ============================================================
-# VALORES NO SENSIBLES — commitear este archivo es seguro
+# NON-SENSITIVE VALUES — safe to commit
 # ============================================================
-# Copiar a terraform.tfvars (gitignored) para desarrollo local.
-# En CI / Terraform Cloud, definir TODAS las variables directamente
-# en el workspace (sin necesidad de terraform.tfvars).
+# Copy to terraform.tfvars (gitignored) for local development.
+# In CI / Terraform Cloud, define ALL variables directly
+# in the workspace (no terraform.tfvars needed).
 
 proxmox_api_url      = "https://pve04.home.lab:8006/api2/json"
 proxmox_api_token_id = "terraform@pve!terraform"
 proxmox_tls_insecure = true
 proxmox_node         = "pve04"
 
-lxc_template = "local:vztmpl/ubuntu-25.04-standard_25.04-1.1_amd64.tar.zst"
+lxc_template = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
 
 mariadb_ip = "192.168.1.60"
 gateway    = "192.168.1.1"
 storage    = "local-lvm"
 
-# Pass 2 — sin secrets, solo el flag y la lista de DBs
+# Pass 2 — no secrets, just the flag and the DB list
 # provision_databases = true
 # databases = [
-#   { name = "nextcloud", user = "nextcloud", password = "ver TF Cloud" }
+#   { name = "nextcloud", user = "nextcloud", password = "see TF Cloud" }
 # ]
 
 # ============================================================
-# VARIABLES SENSIBLES — definir en Terraform Cloud workspace
-# (Settings → Variables → + Add variable → marcar "Sensitive")
+# SENSITIVE VARIABLES — define in Terraform Cloud workspace
+# (Settings → Variables → + Add variable → mark "Sensitive")
 # ============================================================
-# proxmox_api_token_secret  → secret del API token de Proxmox
-# lxc_root_password         → password root del LXC
-# ssh_public_key            → clave pública SSH
-# mariadb_root_password     → password root de MariaDB (Pass 2)
-# databases[*].password     → passwords de usuarios de BD (Pass 2)
+# proxmox_api_token_secret  → Proxmox API token secret
+# lxc_root_password         → LXC root password
+# ssh_public_key            → SSH public key
+# mariadb_root_password     → MariaDB root password (Pass 2)
+# databases[*].password     → DB user passwords (Pass 2)

@@ -1,0 +1,5 @@
+---
+tfc_agent_token: ""
+tfc_agent_name: "homelab-pve04"
+tfc_agent_image: "hashicorp/tfc-agent:latest"
+tfc_agent_compose_dir: "/opt/tfc-agent"

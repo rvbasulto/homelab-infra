@@ -43,10 +43,10 @@ variable "ssh_public_key" {
   type        = string
 }
 
-variable "nextcloud_ip" {
-  description = "Static IP address for the Nextcloud LXC container"
+variable "agent_ip" {
+  description = "Static IP address for the HCP Terraform agent LXC"
   type        = string
-  default     = "192.168.1.65"
+  default     = "192.168.1.50"
 }
 
 variable "gateway" {
@@ -65,16 +65,4 @@ variable "storage" {
   description = "Proxmox storage pool for the rootfs"
   type        = string
   default     = "local-lvm"
-}
-
-variable "disk2t_host_path" {
-  description = "Path to disk2t on the pve04 host (verify with pvesm status)"
-  type        = string
-  default     = "/mnt/pve/disk2t"
-}
-
-variable "disk2t_container_path" {
-  description = "Mount point for disk2t inside the LXC container"
-  type        = string
-  default     = "/mnt/disk2t"
 }

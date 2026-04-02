@@ -8,7 +8,7 @@ module "nextcloud_lxc" {
   ssh_public_key    = var.ssh_public_key
   cores             = 4
   memory            = 2048
-  rootfs_size       = "16G"
+  rootfs_size       = 16
   ip_address        = var.nextcloud_ip
   gateway           = var.gateway
   network_bridge    = var.network_bridge
@@ -18,9 +18,7 @@ module "nextcloud_lxc" {
   # IMPORTANT: Before applying, run on pve04:
   #   chown -R 100000:100000 /mnt/pve/disk2t
   mountpoints = [{
-    mp      = var.disk2t_container_path
-    storage = ""
-    volume  = var.disk2t_host_path
-    size    = "2000G"
+    mp     = var.disk2t_container_path
+    volume = var.disk2t_host_path
   }]
 }

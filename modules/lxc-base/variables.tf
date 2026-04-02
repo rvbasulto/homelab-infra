@@ -11,7 +11,7 @@ variable "hostname" {
 variable "lxc_template" {
   description = "LXC OS template (must be pre-downloaded on the Proxmox node)"
   type        = string
-  default     = "local:vztmpl/ubuntu-25.04-standard_25.04-1.1_amd64.tar.zst"
+  default     = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
 }
 
 variable "lxc_root_password" {
@@ -44,9 +44,9 @@ variable "swap" {
 }
 
 variable "rootfs_size" {
-  description = "Root filesystem size (e.g. '8G')"
-  type        = string
-  default     = "8G"
+  description = "Root filesystem size in GB"
+  type        = number
+  default     = 8
 }
 
 variable "ip_address" {
@@ -72,13 +72,23 @@ variable "storage" {
   default     = "local-lvm"
 }
 
+variable "nameserver" {
+  description = "DNS server IP for the LXC container"
+  type        = string
+  default     = "192.168.1.53"
+}
+
+variable "nesting" {
+  description = "Enable nesting (required for Docker in unprivileged LXC)"
+  type        = bool
+  default     = false
+}
+
 variable "mountpoints" {
   description = "Optional bind-mount list for the LXC container"
   type = list(object({
-    mp      = string
-    storage = string
-    volume  = string
-    size    = string
+    mp     = string
+    volume = string
   }))
   default = []
 }

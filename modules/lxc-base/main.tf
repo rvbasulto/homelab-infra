@@ -1,37 +1,61 @@
-resource "proxmox_lxc" "this" {
-  target_node     = var.proxmox_node
-  hostname        = var.hostname
-  ostemplate      = var.lxc_template
-  password        = var.lxc_root_password
-  ssh_public_keys = var.ssh_public_key
-  unprivileged    = true
-  cores           = var.cores
-  memory          = var.memory
-  swap            = var.swap
-  onboot          = true
-  start           = true
+resource "proxmox_virtual_environment_container" "this" {
+  node_name    = var.proxmox_node
+  unprivileged = true
+  started      = true
 
-  rootfs {
-    storage = var.storage
-    size    = var.rootfs_size
+  features {
+    nesting = var.nesting
   }
 
-  network {
+  cpu {
+    cores = var.cores
+  }
+
+  memory {
+    dedicated = var.memory
+    swap      = var.swap
+  }
+
+  disk {
+    datastore_id = var.storage
+    size         = var.rootfs_size
+  }
+
+  initialization {
+    hostname = var.hostname
+
+    dns {
+      servers = [var.nameserver]
+    }
+
+    ip_config {
+      ipv4 {
+        address = "${var.ip_address}/24"
+        gateway = var.gateway
+      }
+    }
+
+    user_account {
+      keys     = [var.ssh_public_key]
+      password = var.lxc_root_password
+    }
+  }
+
+  network_interface {
     name   = "eth0"
     bridge = var.network_bridge
-    ip     = "${var.ip_address}/24"
-    gw     = var.gateway
   }
 
-  dynamic "mountpoint" {
+  operating_system {
+    template_file_id = var.lxc_template
+    type             = "ubuntu"
+  }
+
+  dynamic "mount_point" {
     for_each = var.mountpoints
     content {
-      slot    = mountpoint.key
-      key     = tostring(mountpoint.key)
-      mp      = mountpoint.value.mp
-      storage = mountpoint.value.storage
-      volume  = mountpoint.value.volume
-      size    = mountpoint.value.size
+      path   = mount_point.value.mp
+      volume = mount_point.value.volume
     }
   }
 }

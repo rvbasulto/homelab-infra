@@ -1,11 +1,11 @@
-# Workflow SOPS:
+# SOPS workflow:
 #   1. cp all.yml.example all.yml
-#   2. Rellena los valores reales
-#   3. sops --encrypt --in-place all.yml   ← cifra el archivo in-place
-#   4. git add all.yml                     ← seguro: está cifrado con age
+#   2. Fill in real values
+#   3. sops --encrypt --in-place all.yml   # encrypts the file in-place
+#   4. git add all.yml                     # safe: encrypted with age
 #
-# Para editar después: sops all.yml  (abre en $EDITOR, guarda cifrado)
-# La clave age se carga desde: $SOPS_AGE_KEY_FILE (default: ~/.config/sops/age/keys.txt)
+# To edit later: sops all.yml  (opens in $EDITOR, saves encrypted)
+# Age key loaded from: $SOPS_AGE_KEY_FILE (default: ~/.config/sops/age/keys.txt)
 
 # Nextcloud role variables
 nextcloud_admin_user: "admin"

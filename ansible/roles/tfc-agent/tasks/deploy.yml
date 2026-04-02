@@ -1,0 +1,23 @@
+---
+- name: Create tfc-agent directory
+  file:
+    path: "{{ tfc_agent_compose_dir }}"
+    state: directory
+    mode: "0750"
+
+- name: Render docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ tfc_agent_compose_dir }}/docker-compose.yml"
+    mode: "0640"
+  notify: Restart tfc-agent
+
+- name: Pull tfc-agent image
+  community.docker.docker_image:
+    name: "{{ tfc_agent_image }}"
+    source: pull
+
+- name: Start tfc-agent via docker compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ tfc_agent_compose_dir }}"
+    state: present

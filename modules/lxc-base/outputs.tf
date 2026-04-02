@@ -1,6 +1,6 @@
 output "hostname" {
   description = "Hostname of the LXC container"
-  value       = proxmox_lxc.this.hostname
+  value       = proxmox_virtual_environment_container.this.initialization[0].hostname
 }
 
 output "ip_address" {
@@ -10,5 +10,5 @@ output "ip_address" {
 
 output "lxc_id" {
   description = "Proxmox VMID of the LXC container"
-  value       = proxmox_lxc.this.vmid
+  value       = proxmox_virtual_environment_container.this.vm_id
 }

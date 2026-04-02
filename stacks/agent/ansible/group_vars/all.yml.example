@@ -1,0 +1,11 @@
+# SOPS workflow:
+#   1. cp all.yml.example all.yml
+#   2. Fill in real values
+#   3. sops --encrypt --in-place all.yml
+#   4. git add all.yml
+#
+# Token obtained from:
+# HCP Terraform → Settings → Agent Pools → create pool → New Token
+
+tfc_agent_token: "changeme"
+tfc_agent_name: "homelab-pve04"

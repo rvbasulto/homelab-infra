@@ -8,7 +8,7 @@ module "mariadb_lxc" {
   ssh_public_key    = var.ssh_public_key
   cores             = 2
   memory            = 1024
-  rootfs_size       = "16G"
+  rootfs_size       = 16
   ip_address        = var.mariadb_ip
   gateway           = var.gateway
   network_bridge    = var.network_bridge

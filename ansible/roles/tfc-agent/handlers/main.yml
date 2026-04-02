@@ -1,0 +1,6 @@
+---
+- name: Restart tfc-agent
+  community.docker.docker_compose_v2:
+    project_src: "{{ tfc_agent_compose_dir }}"
+    state: present
+    restarted: true

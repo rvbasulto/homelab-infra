@@ -20,12 +20,6 @@ variable "proxmox_tls_insecure" {
   default     = true
 }
 
-variable "proxmox_api_timeout" {
-  description = "Proxmox API timeout in seconds"
-  type        = number
-  default     = 600
-}
-
 variable "proxmox_node" {
   description = "Proxmox node name"
   type        = string
