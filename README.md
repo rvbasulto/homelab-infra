@@ -132,8 +132,11 @@ ansible-playbook site.yml
 
 # 7. Configure database and media workspaces:
 #    Settings → General → Execution Mode → Agent → select pool
-#    Settings → Version Control → connect GitHub repo
 #    Settings → General → Terraform Working Directory → stacks/<stack>/terraform
+#    Settings → Version Control → connect GitHub repo
+#    Settings → Version Control → Automatic Run Triggering →
+#      "Only trigger runs when files in specified paths change"
+#      Path: stacks/<stack>/terraform
 ```
 
 ### Database stack

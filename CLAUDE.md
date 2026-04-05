@@ -55,8 +55,10 @@ provider "proxmox" {
 - Agent online in HCP Terraform org `rvbasulto-homelab`
 - **Next step:** configure `database` and `media` workspaces in HCP Terraform UI:
   - Execution Mode → Agent → select pool
-  - Version Control → connect GitHub repo
   - Working Directory → `stacks/<stack>/terraform`
+  - Version Control → connect GitHub repo
+  - Version Control → Automatic Run Triggering → **Only trigger runs when files in specified paths change** → path: `stacks/<stack>/terraform`
+  - (Without the path filter, any push to the monorepo triggers plans in ALL workspaces)
 
 ### Database stack — PENDING
 - Infrastructure not yet applied
