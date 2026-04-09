@@ -66,14 +66,18 @@ Each stack has its own workspace in the `rvbasulto-homelab` organization.
 
 The `database` and `media` workspaces are connected to this repo via VCS (GitHub) and use the Agent Pool from the `agent` stack to run plans inside the homelab network.
 
-Sensitive variables configured directly in each workspace (marked as *Sensitive*):
+Variables configured directly in each workspace:
 
-| Variable | Workspaces |
-|---|---|
-| `proxmox_api_token_secret` | database, media |
-| `lxc_root_password` | database, media |
-| `ssh_public_key` | database, media |
-| `mariadb_root_password` | database (Pass 2) |
+| Variable | Category | Sensitive | Workspaces |
+|---|---|---|---|
+| `proxmox_api_url` | **terraform** | No | database, media |
+| `proxmox_api_token_id` | **terraform** | No | database, media |
+| `proxmox_api_token_secret` | **terraform** | Yes | database, media |
+| `lxc_root_password` | **terraform** | Yes | database, media |
+| `ssh_public_key` | **terraform** | Yes | database, media |
+| `mariadb_root_password` | **terraform** | Yes | database (Pass 2) |
+
+> **Important:** All variables must be category `terraform`, not `env`. Using `env` category will cause "No value for required variable" errors even when the variable is set.
 
 > The `homelab-agent` workspace is the exception: it uses a local `terraform.tfvars` (gitignored) because it runs once in bootstrap mode before the agent exists.
 
