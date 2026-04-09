@@ -57,8 +57,10 @@ provider "proxmox" {
   - Execution Mode → Agent → select pool
   - Working Directory → `stacks/<stack>/terraform`
   - Version Control → connect GitHub repo
-  - Version Control → Automatic Run Triggering → **Only trigger runs when files in specified paths change** → path: `stacks/<stack>/terraform`
-  - (Without the path filter, any push to the monorepo triggers plans in ALL workspaces)
+  - Version Control → Automatic Run Triggering → **Only trigger runs when files in specified paths change**
+    - Syntax: **Patterns** (not Prefixes)
+    - Path: `stacks/<stack>/terraform/**/*`
+    - (Using just `stacks/<stack>/terraform` with Patterns won't match files inside the directory — the glob `**/*` is required)
 
 ### Database stack — PENDING
 - Infrastructure not yet applied

@@ -140,7 +140,8 @@ ansible-playbook site.yml
 #    Settings → Version Control → connect GitHub repo
 #    Settings → Version Control → Automatic Run Triggering →
 #      "Only trigger runs when files in specified paths change"
-#      Path: stacks/<stack>/terraform
+#      Syntax: Patterns (not Prefixes)
+#      Path: stacks/<stack>/terraform/**/*
 ```
 
 ### Database stack

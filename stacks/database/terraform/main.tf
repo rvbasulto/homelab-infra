@@ -13,6 +13,7 @@ module "mariadb_lxc" {
   gateway           = var.gateway
   network_bridge    = var.network_bridge
   storage           = var.storage
+  nesting           = true
 }
 
 # Pass 2: database and user provisioning (requires MariaDB to be running)
