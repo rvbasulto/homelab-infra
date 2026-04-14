@@ -28,3 +28,4 @@ disk2t_container_path = "/mnt/disk2t"
 # proxmox_api_token_secret  → Proxmox API token secret
 # lxc_root_password         → LXC root password
 # ssh_public_key            → SSH public key
+######
