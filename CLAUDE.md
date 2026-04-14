@@ -47,24 +47,33 @@ provider "proxmox" {
 | database | homelab-database | pve04 | 192.168.1.60 | — |
 | media | homelab-media | pve04 | 192.168.1.65 | — |
 
-## Current status (2026-04-01)
+## Current status (2026-04-12)
 
 ### Agent stack — COMPLETE ✓
 - LXC `tfc-agent` running on pve04 (IP 192.168.1.50)
 - Docker installed, `hashicorp/tfc-agent` deployed via docker-compose
 - Agent online in HCP Terraform org `rvbasulto-homelab`
-- **Next step:** configure `database` and `media` workspaces in HCP Terraform UI:
-  - Execution Mode → Agent → select pool
-  - Working Directory → `stacks/<stack>/terraform`
-  - Version Control → connect GitHub repo
-  - Version Control → Automatic Run Triggering → **Only trigger runs when files in specified paths change**
-    - Syntax: **Patterns** (not Prefixes)
-    - Path: `stacks/<stack>/terraform/**/*`
-    - (Using just `stacks/<stack>/terraform` with Patterns won't match files inside the directory — the glob `**/*` is required)
 
-### Database stack — PENDING
-- Infrastructure not yet applied
-- Sensitive variables must be set in the HCP Terraform workspace (not tfvars)
+### Database stack — IN PROGRESS
+- Pass 1 (LXC creation) — COMPLETE ✓
+- Ansible (Docker + MariaDB) — COMPLETE ✓ (2026-04-12)
+- TFC workspace variables configured ✓ (2026-04-13)
+- **Next step:** Pass 2 — trigger run in TFC workspace `homelab-database`
+
+#### TFC workspace variables (homelab-database)
+| Variable | Sensitive | Notes |
+|---|---|---|
+| `provision_databases` | no | `true` |
+| `mariadb_root_password` | yes | MariaDB root password |
+| `databases` | no | `[{name="nextcloud", user="nextcloud", password="..."}]` — visible en UI para facilitar edición futura |
+| `proxmox_api_token_secret` | yes | |
+| `lxc_root_password` | yes | |
+| `ssh_public_key` | yes | optiplex public key |
+| `proxmox_api_token_id` | no | `terraform@pve!terraform` |
+| `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
+
+> `databases` se dejó **no sensitive** intencionalmente para poder ver y editar su contenido desde la UI.
+> Pendiente: evaluar guardar el valor canónico en `group_vars/all.yml` (SOPS) como fuente de verdad.
 
 ### Media stack — PENDING
 - Infrastructure not yet applied
@@ -90,3 +99,14 @@ pre_tasks:
 ```
 
 Also set `vars_plugins_enabled = host_group_vars` in `ansible.cfg` (do not include `community.sops.sops` as a vars plugin).
+
+## Ansible docker_compose_v2 handler
+
+To restart a compose project in a handler, use `state: restarted` — NOT `restarted: true` (unsupported parameter):
+
+```yaml
+- name: Restart <service>
+  community.docker.docker_compose_v2:
+    project_src: "{{ compose_dir }}"
+    state: restarted
+```
