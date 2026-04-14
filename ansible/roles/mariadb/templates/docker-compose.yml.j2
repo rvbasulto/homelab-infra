@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: "{{ mariadb_root_password }}"
+      MARIADB_ROOT_HOST: "%"
     ports:
       - "{{ mariadb_port }}:3306"
     volumes:

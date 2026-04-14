@@ -18,7 +18,7 @@ storage      = "local-lvm"
 
 # Verify real path with: pvesm status (on pve04)
 # Before first apply: chown -R 100000:100000 /mnt/pve/disk2t
-disk2t_host_path      = "/mnt/pve/disk2t"
+disk2t_host_path      = "/mnt/disk2t"
 disk2t_container_path = "/mnt/disk2t"
 
 # ============================================================

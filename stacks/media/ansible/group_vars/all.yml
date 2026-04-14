@@ -8,11 +8,11 @@
 #ENC[AES256_GCM,data:ULZffmM+f6T5/8GA9LUZR3WDBjzjkZmNTjx6bhpABc09DKdbwlmoKj+c/6cUnguKqterYUB8ddHhk+82FNm1w/x4yPyTVvo1xAhcJ4nRhf6j9hsNImc9,iv:+IRVzcejkgzETAcD56x0bc5JHX5eC6N9i6PoBNC2e/4=,tag:PNeRhjRUoBJIypbQJ84z1g==,type:comment]
 #ENC[AES256_GCM,data:RcdS6sQ/sxN17HCQ4eOufdGeYA/6AG8U2g==,iv:DZ2R26V+i7hXI7B6aNtWNlkj61Ci9g4SggLnG/5Tc3M=,tag:J3f5ijMdCwny6Nzz2XNaww==,type:comment]
 nextcloud_admin_user: ENC[AES256_GCM,data:HsfB7m0=,iv:qH8wsdpX3yISLdjYsWSnRFtXiL/Y/hWWHd1sILd7CYU=,tag:NUtDXnP5iXLw9u2f56ARmA==,type:str]
-nextcloud_admin_password: ENC[AES256_GCM,data:HiWDhby6c2w=,iv:NcjbVhLsZ9cl68+TMMbaEaI6iCrNKUzMQigM7R/ZpWI=,tag:2V22TiwVUf+a2hh9rH2Qjg==,type:str]
+nextcloud_admin_password: ENC[AES256_GCM,data:FUrAs4Fegc01ORc=,iv:H1IQIdOKHuwfA1dthBN3E0w11rI9ljWuEiYpRzpiVns=,tag:xfZPEqjgMOkR6FrY57gcTw==,type:str]
 nextcloud_db_host: ENC[AES256_GCM,data:eL4Ud6pcrbAUvuVU,iv:l/xt0c+DOGbPWkJ2DXZCRGygxnuAytIMq2OozTaeiG0=,tag:0ZSvmHLs6j+Vk1168M5HTg==,type:str]
 nextcloud_db_name: ENC[AES256_GCM,data:cYrTytbn9YvU,iv:TyCcpGZd1qBcsM0KK14x6QgrFZOjgajSyROohRbar7Q=,tag:6tciPy5hRCMokYE8e7v0ag==,type:str]
 nextcloud_db_user: ENC[AES256_GCM,data:S4tBu6EIhCEn,iv:vWdi8f5pEYcfXVjG3DkPGHpCYMOQo7b0b6fEHirY67U=,tag:BqTvyYn54xQqlg0gU2Wd4g==,type:str]
-nextcloud_db_password: ENC[AES256_GCM,data:+OM4R+9lY6M=,iv:YsDuddxa2ZZbY7LLqspznsw0TW8vos4tDRynDe/2q+c=,tag:nwBq2KlQBgnSc7UniCODJg==,type:str]
+nextcloud_db_password: ENC[AES256_GCM,data:1u1AIr9tWXxsk1g=,iv:1PGMF/UZVwXBnlCBTY5difj0mhDozsOU1AiFZY4pIsY=,tag:2h16X1J4RapyzyeF1gWCMg==,type:str]
 nextcloud_data_dir: ENC[AES256_GCM,data:4ckaSn9oyRZHaNPW1VT1numPgAlQZiyCnmg=,iv:CbdvZ8PFZtwJGOvVOXTns1AhZ9VZiOj503Yzj9Ef6BI=,tag:FKTBN/1PL+2aaFbeWXLcYw==,type:str]
 nextcloud_port: ENC[AES256_GCM,data:7WJZRQ==,iv:vo/ww8OtMpacIrHhVmWCXU37L/xL1Tq4wXEYoOskBvQ=,tag:YYNOmXT6dY3btj3+DOaJUQ==,type:int]
 sops:
@@ -26,7 +26,7 @@ sops:
             bk9QanU0SWpLWGVRZ3Y0aWxpM1BpWHcKp5iD3zelDApsg+Q3wGq2H+/zSjXpGhQt
             IseAytx8BRRS2ARVmWxlJ7sGluQV7cfiRWSPsiKE4OmSfLtunB2/5g==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2026-03-29T02:55:18Z"
-    mac: ENC[AES256_GCM,data:x+jTkDlXLJYdjzyaCfVSxlOYL/UpvrMR2DqTQSVnlk3FWL6iDeKQBobY0ZHhv7soSP1mamYXfX43tzdkvJ61gVOb0FKPkTm9bBFRuzjl3hStu2CVrC9hmmQnPk4nyahqEzqYvShI/9RvQQM30bIO2fUVfnvhvsWc432J02BgOzc=,iv:JSv6A+QxMDk2qMN2zAbkAYylb6GowuHBzhaqfO9Dfj4=,tag:CFqq8TFzcse53LG7+Ibzlg==,type:str]
+    lastmodified: "2026-04-14T02:44:18Z"
+    mac: ENC[AES256_GCM,data:FigBrwqcInyWzAidI2iNXx22I7MVIO3w06N9Vcs8XGzkMnWwUZ43NjYOLdhO9WmaDa53RBWN/eVSE1kQPPlSqzuMyEQg0NSNMzpgL4i5YdNYECb3NBs0q8m6pPLaQ2snniOA0XcMCCD5DEOu+myjmR17wYzjWOjoZf3QbO0aJxg=,iv:UaV/86Oj6ht/JBnQG+haVCObNlFX2sjM3JPt8KhjHC0=,tag:C6GgcZdNfZQS9mGYX8wz0A==,type:str]
     unencrypted_suffix: _unencrypted
     version: 3.12.2

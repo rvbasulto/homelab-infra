@@ -51,7 +51,7 @@ Each stack has its own `terraform/` and `ansible/` directories. Ansible roles ar
   ```
 - For the `media` stack, adjust disk ownership before the first apply:
   ```bash
-  chown -R 100000:100000 /mnt/pve/disk2t
+  chown -R 100000:100000 /mnt/disk2t
   ```
 
 ### 2. HCP Terraform
