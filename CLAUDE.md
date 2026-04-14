@@ -49,6 +49,9 @@ provider "proxmox" {
 
 ## Current status (2026-04-13)
 
+> **Pending migration:** after Nextcloud is up, copy user files from `/mnt/disk2t/nextcloud-backup/data/data/{rvbasulto,grdelgado}/files/` to `/mnt/disk2t/nextcloud/data/{rvbasulto,grdelgado}/files/`, fix ownership, and run `occ files:scan --all`.
+
+
 ### Agent stack — COMPLETE ✓
 - LXC `tfc-agent` running on pve04 (IP 192.168.1.50)
 - Docker installed, `hashicorp/tfc-agent` deployed via docker-compose
@@ -74,9 +77,14 @@ provider "proxmox" {
 
 > TODO: evaluate storing the canonical value of `databases` in `group_vars/all.yml` (SOPS) as source of truth.
 
-### Media stack — PENDING
-- Infrastructure not yet applied
-- Requires `chown -R 100000:100000 /mnt/disk2t` on pve04 before applying
+### Media stack — IN PROGRESS (2026-04-13)
+- `chown -R 100000:100000 /mnt/disk2t` — DONE ✓
+- Old Nextcloud installation backed up to `/mnt/disk2t/nextcloud-backup/` on pve04
+  - User data to migrate: `nextcloud-backup/data/data/rvbasulto/` and `nextcloud-backup/data/data/grdelgado/`
+  - Migration plan: copy files to new data dir + run `occ files:scan` after Nextcloud is up
+- New data dir: `/mnt/disk2t/nextcloud/data` (clean, created by Nextcloud on first run)
+- TFC workspace variables configured ✓
+- **Next step:** Terraform apply (TFC) → Ansible
 
 ## Notes
 

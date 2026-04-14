@@ -3,6 +3,11 @@
   hosts: media
   become: true
 
+  pre_tasks:
+    - name: Load SOPS-encrypted variables
+      community.sops.load_vars:
+        file: "{{ playbook_dir }}/group_vars/all.yml"
+
   roles:
     - role: docker
     - role: nextcloud
