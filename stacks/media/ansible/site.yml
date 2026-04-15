@@ -1,4 +1,38 @@
 ---
+- name: Configure bind mount on Proxmox host
+  hosts: proxmox
+  become: false
+
+  tasks:
+    - name: Get nextcloud VMID
+      shell: pct list | awk '/nextcloud/ {print $1}'
+      register: vmid_result
+      changed_when: false
+
+    - name: Ensure bind mount is configured in LXC config
+      lineinfile:
+        path: "/etc/pve/lxc/{{ vmid_result.stdout }}.conf"
+        line: "mp0: /mnt/disk2t,mp=/mnt/disk2t"
+        regexp: "^mp0:"
+        state: present
+      register: mount_config
+
+    - name: Stop LXC to apply mount config
+      command: "pct stop {{ vmid_result.stdout }}"
+      when: mount_config.changed
+
+    - name: Start LXC after mount config
+      command: "pct start {{ vmid_result.stdout }}"
+      when: mount_config.changed
+
+    - name: Wait for LXC to be running
+      command: "pct status {{ vmid_result.stdout }}"
+      register: lxc_status
+      until: "'running' in lxc_status.stdout"
+      retries: 10
+      delay: 5
+      when: mount_config.changed
+
 - name: Configure media host
   hosts: media
   become: true

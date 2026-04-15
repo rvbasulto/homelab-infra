@@ -16,10 +16,8 @@ nextcloud_ip = "192.168.1.65"
 gateway      = "192.168.1.1"
 storage      = "local-lvm"
 
-# Verify real path with: pvesm status (on pve04)
-# Before first apply: chown -R 100000:100000 /mnt/pve/disk2t
-disk2t_host_path      = "/mnt/disk2t"
-disk2t_container_path = "/mnt/disk2t"
+# Bind mount for disk2t is configured via Ansible on pve04 (see site.yml).
+# Proxmox API restricts bind mounts to root@pam direct sessions only.
 
 # ============================================================
 # SENSITIVE VARIABLES — define in Terraform Cloud workspace
@@ -28,4 +26,3 @@ disk2t_container_path = "/mnt/disk2t"
 # proxmox_api_token_secret  → Proxmox API token secret
 # lxc_root_password         → LXC root password
 # ssh_public_key            → SSH public key
-######

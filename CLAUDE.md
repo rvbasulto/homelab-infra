@@ -88,7 +88,8 @@ provider "proxmox" {
 
 ## Notes
 
-- disk2t bind mount in media: host path `/mnt/disk2t` (mounted directly, not under `/mnt/pve/`), container path configurable via `disk2t_container_path`
+- disk2t bind mount in media: configured via Ansible on pve04 (not Terraform) — Proxmox API restricts bind mounts to `root@pam` direct sessions only. Ansible edits `/etc/pve/lxc/<vmid>.conf` and restarts the LXC.
+- pve04 actual IP: `192.168.1.93` (the `proxmox_api_url` `192.168.1.90` is a different cluster node)
 - Database uses two-pass: Pass 1 creates LXC (provision_databases=false) → Ansible → Pass 2 creates DBs (provision_databases=true)
 - Terraform Cloud org: `rvbasulto-homelab`
 - Proxmox API: `terraform@pve!terraform` token

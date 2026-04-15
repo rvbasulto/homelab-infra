@@ -67,14 +67,3 @@ variable "storage" {
   default     = "local-lvm"
 }
 
-variable "disk2t_host_path" {
-  description = "Path to disk2t on the pve04 host (verify with pvesm status)"
-  type        = string
-  default     = "/mnt/pve/disk2t"
-}
-
-variable "disk2t_container_path" {
-  description = "Mount point for disk2t inside the LXC container"
-  type        = string
-  default     = "/mnt/disk2t"
-}

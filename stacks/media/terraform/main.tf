@@ -14,11 +14,7 @@ module "nextcloud_lxc" {
   network_bridge    = var.network_bridge
   storage           = var.storage
 
-  # Bind-mount disk2t from pve04 host into the LXC.
-  # IMPORTANT: Before applying, run on pve04:
-  #   chown -R 100000:100000 /mnt/pve/disk2t
-  mountpoints = [{
-    mp     = var.disk2t_container_path
-    volume = var.disk2t_host_path
-  }]
+  nesting = true
+  # Bind mount for disk2t is configured via Ansible on pve04 after LXC creation.
+  # Proxmox API does not allow bind mounts for non-root@pam tokens.
 }
