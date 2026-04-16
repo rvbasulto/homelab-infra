@@ -1,0 +1,19 @@
+---
+plex_image: "lscr.io/linuxserver/plex:latest"
+plex_compose_dir: "/opt/plex"
+plex_config_dir: "/opt/plex/config"
+plex_media_dir: "/mnt/disk2t/plex/media"
+plex_port: 32400
+plex_puid: "0"
+plex_pgid: "0"
+plex_timezone: "America/Chicago"
+plex_version: "docker"
+plex_claim: ""
+
+# Traefik labels
+# Note: auto-discovery only works if Traefik's Docker provider watches this LXC's Docker socket.
+# Since Traefik runs on a separate LXC (192.168.1.97), configure Traefik's file provider
+# to route to 192.168.1.70:32400 for external access via plex.home.lab.
+plex_traefik_enabled: false
+plex_traefik_host: "plex.home.lab"
+plex_traefik_entrypoint: "websecure"

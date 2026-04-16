@@ -1,0 +1,37 @@
+---
+services:
+  plex:
+    image: {{ plex_image }}
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      PUID: "{{ plex_puid }}"
+      PGID: "{{ plex_pgid }}"
+      TZ: "{{ plex_timezone }}"
+      VERSION: "{{ plex_version }}"
+{% if plex_claim | length > 0 %}
+      PLEX_CLAIM: "{{ plex_claim }}"
+{% endif %}
+    volumes:
+      - {{ plex_config_dir }}:/config
+      - {{ plex_media_dir }}/movies:/movies:ro
+      - {{ plex_media_dir }}/tvshows:/tv:ro
+    labels:
+      org.opencontainers.image.title: "Plex Media Server"
+      org.opencontainers.image.description: "Plex media server — movies and TV from disk2t"
+      com.homelab.stack: "plex"
+      com.homelab.host: "192.168.1.70"
+{% if plex_traefik_enabled %}
+      traefik.enable: "true"
+      traefik.http.routers.plex.rule: "Host(`{{ plex_traefik_host }}`)"
+      traefik.http.routers.plex.entrypoints: "{{ plex_traefik_entrypoint }}"
+      traefik.http.routers.plex.tls: "true"
+      traefik.http.services.plex.loadbalancer.server.port: "{{ plex_port }}"
+{% endif %}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:32400/identity"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

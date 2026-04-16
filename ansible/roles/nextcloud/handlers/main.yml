@@ -2,5 +2,4 @@
 - name: Restart nextcloud
   community.docker.docker_compose_v2:
     project_src: "{{ nextcloud_compose_dir }}"
-    state: present
-    restarted: true
+    state: restarted

@@ -1,0 +1,23 @@
+---
+- name: Create Plex config directory
+  file:
+    path: "{{ plex_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Render docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ plex_compose_dir }}/docker-compose.yml"
+    mode: "0640"
+  notify: Restart plex
+
+- name: Pull Plex image
+  community.docker.docker_image:
+    name: "{{ plex_image }}"
+    source: pull
+
+- name: Start Plex via docker compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ plex_compose_dir }}"
+    state: present

@@ -1,0 +1,16 @@
+# Plex role variables
+# Most defaults are set in ansible/roles/plex/defaults/main.yml.
+# Override here only what differs from defaults.
+
+# Optional: provide a claim token from https://plex.tv/claim to associate
+# the server with your Plex account on first run. Tokens expire in 4 minutes.
+# plex_claim: "claim-xxxxxxxxxxxxxxxxxxxx"
+
+# Timezone (default: America/Chicago — change to match your location)
+# plex_timezone: "America/Chicago"
+
+# Set to true to add Traefik routing labels to the container.
+# Requires Traefik's Docker provider to watch this LXC's Docker socket,
+# or configure Traefik's file provider separately to route to 192.168.1.70:32400.
+# plex_traefik_enabled: false
+# plex_traefik_host: "plex.home.lab"

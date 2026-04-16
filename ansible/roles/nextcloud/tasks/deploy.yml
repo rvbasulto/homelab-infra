@@ -24,3 +24,35 @@
   community.docker.docker_compose_v2:
     project_src: "{{ nextcloud_compose_dir }}"
     state: present
+
+- name: Set trusted domains via occ
+  community.docker.docker_container_exec:
+    container: nextcloud
+    user: www-data
+    command: "php occ config:system:set trusted_domains {{ idx }} --value={{ item }}"
+  loop: "{{ nextcloud_trusted_domains }}"
+  loop_control:
+    index_var: idx
+
+- name: Set trusted proxies via occ
+  community.docker.docker_container_exec:
+    container: nextcloud
+    user: www-data
+    command: "php occ config:system:set trusted_proxies {{ idx }} --value={{ item }}"
+  loop: "{{ nextcloud_trusted_proxies }}"
+  loop_control:
+    index_var: idx
+
+- name: Set overwritehost via occ
+  community.docker.docker_container_exec:
+    container: nextcloud
+    user: www-data
+    command: "php occ config:system:set overwritehost --value={{ nextcloud_overwrite_host }}"
+  when: nextcloud_overwrite_host | length > 0
+
+- name: Set overwriteprotocol via occ
+  community.docker.docker_container_exec:
+    container: nextcloud
+    user: www-data
+    command: "php occ config:system:set overwriteprotocol --value={{ nextcloud_overwrite_protocol }}"
+  when: nextcloud_overwrite_host | length > 0

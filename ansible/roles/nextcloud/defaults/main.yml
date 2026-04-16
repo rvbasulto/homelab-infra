@@ -2,6 +2,7 @@
 nextcloud_image: "nextcloud:apache"
 nextcloud_compose_dir: "/opt/nextcloud"
 nextcloud_port: 8080
+nextcloud_ip: "192.168.1.65"
 nextcloud_data_dir: "/mnt/disk2t/nextcloud/data"
 nextcloud_admin_user: "admin"
 nextcloud_admin_password: "changeme"
@@ -9,3 +10,10 @@ nextcloud_db_host: "192.168.1.60"
 nextcloud_db_name: "nextcloud"
 nextcloud_db_user: "nextcloud"
 nextcloud_db_password: "changeme"
+
+# Reverse proxy / trusted domains
+nextcloud_trusted_domains:
+  - "192.168.1.65"
+nextcloud_trusted_proxies: []
+nextcloud_overwrite_host: ""
+nextcloud_overwrite_protocol: "https"
