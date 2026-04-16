@@ -59,7 +59,7 @@ provider "proxmox" {
 | media | homelab-media | pve04 | 192.168.1.65 | — |
 | plex | homelab-plex | pve04 | 192.168.1.70 | — |
 
-## Current status (2026-04-15)
+## Current status (2026-04-16)
 
 ### Agent stack — COMPLETE ✓
 - LXC `tfc-agent` running on pve04 (IP 192.168.1.50, VMID 106)
@@ -103,10 +103,14 @@ provider "proxmox" {
 | `proxmox_api_token_id` | no | `terraform@pve!terraform` |
 | `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
 
-### Plex stack — IN PROGRESS
-- Terraform (LXC creation) — pending
-- Ansible (bind mount on pve04 + Docker + Plex) — pending
-- Media source: `/mnt/disk2t/plex/media/{movies,tvshows}` on pve04
+### Plex stack — COMPLETE ✓ (2026-04-16)
+- Terraform apply — COMPLETE ✓ (LXC at 192.168.1.70)
+- Ansible (bind mount on pve04 + Docker + Plex) — COMPLETE ✓
+- Plex accessible at `http://192.168.1.70:32400/web`
+- Libraries configured: Movies (`/movies`) and TV Shows (`/tv`) from `/mnt/disk2t/plex/media`
+- Image: `lscr.io/linuxserver/plex:latest`, `network_mode: host`
+
+> **Note:** TFC workspace execution mode must be set to **Agent** (not Remote). Remote mode runs from Hashicorp's cloud and cannot reach the internal 192.168.1.x network.
 
 #### TFC workspace variables (homelab-plex)
 | Variable | Sensitive | Notes |
