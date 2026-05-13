@@ -121,20 +121,20 @@ provider "proxmox" {
 | `proxmox_api_token_id` | no | `terraform@pve!terraform` |
 | `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
 
-### k3s stack — IN PROGRESS (migration from proxmox-k3s-lab)
-- Terraform files created — uses `vm-base` module (bpg/proxmox), TFC workspace `homelab-k3s`
-- Ansible roles created — k3s-common, k3s-server, k3s-agent
-- Traefik manifests copied to `stacks/k3s/manifests/`
-- **Pending:** create TFC workspace + set variables + `terraform import` for existing VMs
+### k3s stack — COMPLETE ✓ (2026-05-12)
+- Migrated from `proxmox-k3s-lab` repo into this monorepo
+- Terraform — uses `vm-base` module (bpg/proxmox), TFC workspace `homelab-k3s` ✓
+- Existing VMs imported via `terraform import` (pve/102, pve02/101, pve03/100) ✓
+- `terraform plan` shows No changes ✓
+- Ansible roles: k3s-common, k3s-server, k3s-agent ✓
+- Traefik manifests in `stacks/k3s/manifests/` ✓
 
-#### Import commands (run after `terraform init` in stacks/k3s/terraform/)
-```bash
-terraform import 'module.k3s_vms["k3s-server-01"].proxmox_virtual_environment_vm.this' pve/102
-terraform import 'module.k3s_vms["k3s-agent-01"].proxmox_virtual_environment_vm.this'  pve02/101
-terraform import 'module.k3s_vms["k3s-agent-02"].proxmox_virtual_environment_vm.this'  pve03/100
-```
+Template: Ubuntu 24.04 cloud-init (VMID 9000, node pve). VMs use Ubuntu 24.04; LXCs use Ubuntu 22.04.
 
-Template: Ubuntu 24.04 cloud-init (VMID 9000, node pve). Note: VMs use Ubuntu 24.04, LXCs use Ubuntu 22.04.
+#### vm-base import gotchas
+- `terraform import` runs locally even with TFC backend — requires a local `terraform.tfvars` with sensitive vars during import (delete after)
+- bpg adds `description = "Managed by Terraform."` on import — add `description` to `lifecycle.ignore_changes`
+- `keyboard_layout`, `agent.type`, `operating_system`, `serial_device` must be explicitly declared in vm-base or they show as drift
 
 #### TFC workspace variables (homelab-k3s)
 | Variable | Sensitive | Notes |
@@ -144,7 +144,7 @@ Template: Ubuntu 24.04 cloud-init (VMID 9000, node pve). Note: VMs use Ubuntu 24
 | `ssh_public_key` | yes | optiplex public key |
 | `proxmox_api_token_id` | no | `terraform@pve!terraform` |
 | `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
-| `template_vm_id` | no | VMID of the Ubuntu template |
+| `template_vm_id` | no | `9000` (Ubuntu 24.04 cloud-init template on pve) |
 | `template_node` | no | `pve` |
 
 #### vm-base vs lxc-base
