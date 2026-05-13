@@ -1,0 +1,46 @@
+# SERVICE
+# Kubernetes object that represents the access point to Plex inside the cluster.
+# No ClusterIP is assigned because the Endpoints point to an external IP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-external
+  namespace: ingress-external  # Dedicated namespace for services external to the cluster
+spec:
+  ports:
+    - port: 32400  # Port where Plex is running
+---
+# ENDPOINTS
+# Manually defines the real IP where the external service lives.
+# Kubernetes normally discovers Endpoints automatically (for internal pods),
+# but since Plex lives outside the cluster, we define it manually.
+# The name MUST match the Service name so Kubernetes links them together.
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: plex-external  # Same name as the Service so K8s associates them
+  namespace: ingress-external
+subsets:
+  - addresses:
+      - ip: 192.168.1.70  # Real IP of the Plex server
+    ports:
+      - port: 32400  # Real Plex port
+---
+# INGRESSROUTE
+# Traefik-native object (more powerful than the standard K8s Ingress).
+# Defines routing rules: which domain goes to which service.
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: plex
+  namespace: ingress-external
+spec:
+  entryPoints:
+    - web       # HTTP (port 80)
+    - websecure # HTTPS (port 443) — Traefik terminates TLS, forwards to Plex over HTTP
+  routes:
+    - match: Host(`plex.home.lab`)  # When a request arrives for plex.home.lab...
+      kind: Rule
+      services:
+        - name: plex-external  # ...forward it to the Service defined above
+          port: 32400           # using Plex's port

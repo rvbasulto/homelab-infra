@@ -5,15 +5,24 @@ Monorepo: Terraform + Ansible for homelab on Proxmox (pve04).
 ## Structure
 
 ```
-modules/lxc-base/         # Reusable LXC module (bpg/proxmox)
+modules/
+  lxc-base/               # Reusable LXC module (bpg/proxmox) — for services (Nextcloud, Plex, etc.)
+  vm-base/                # Reusable VM module (bpg/proxmox) — for workloads needing a full kernel (k3s)
 stacks/
   agent/                  # Bootstrap: creates the TFC agent LXC (local execution)
   database/               # MariaDB LXC + DB/user provisioning
   media/                  # Nextcloud LXC with disk2t bind-mount
   plex/                   # Plex Media Server LXC with disk2t bind-mount
+  k3s/                    # 3-node k3s cluster (1 server + 2 agents) across pve/pve02/pve03
+    terraform/            # Provisions VMs via vm-base module
+    ansible/              # Installs k3s on the VMs
+    manifests/            # Traefik IngressRoutes for all homelab services
 ansible/
   roles/
     docker/               # Installs Docker Engine
+    k3s-agent/            # Joins k3s agent nodes to the cluster
+    k3s-common/           # Prepares nodes for k3s (swap, kernel modules, sysctl)
+    k3s-server/           # Installs k3s server
     mariadb/              # Deploys MariaDB via Docker Compose
     nextcloud/            # Deploys Nextcloud via Docker Compose
     plex/                 # Deploys Plex Media Server via Docker Compose (linuxserver image)
@@ -58,6 +67,15 @@ provider "proxmox" {
 | database | homelab-database | pve04 | 192.168.1.60 | 107 |
 | media | homelab-media | pve04 | 192.168.1.65 | — |
 | plex | homelab-plex | pve04 | 192.168.1.70 | — |
+| k3s | homelab-k3s | pve/pve02/pve03 | see below | — |
+
+**k3s nodes:**
+
+| VM | Proxmox node | IP | Role |
+|---|---|---|---|
+| k3s-server-01 | pve | 192.168.1.97 | server |
+| k3s-agent-01 | pve02 | 192.168.1.80 | agent |
+| k3s-agent-02 | pve03 | 192.168.1.157 | agent |
 
 ## Current status (2026-04-16)
 
@@ -92,7 +110,7 @@ provider "proxmox" {
 - Nextcloud accessible at `http://192.168.1.65:8080` and `https://cloud.home.lab` (via Traefik at 192.168.1.97)
 - User `rvbasulto` files migrated from backup ✓
 
-- User `grdelgado` files scan in progress (launched in background after clearing `oc_file_locks`)
+- User `grdelgado` files migrated from backup ✓ (316,789 files, 43,703 folders scanned)
 
 #### TFC workspace variables (homelab-media)
 | Variable | Sensitive | Notes |
@@ -102,6 +120,49 @@ provider "proxmox" {
 | `ssh_public_key` | yes | optiplex public key |
 | `proxmox_api_token_id` | no | `terraform@pve!terraform` |
 | `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
+
+### k3s stack — IN PROGRESS (migration from proxmox-k3s-lab)
+- Terraform files created — uses `vm-base` module (bpg/proxmox), TFC workspace `homelab-k3s`
+- Ansible roles created — k3s-common, k3s-server, k3s-agent
+- Traefik manifests copied to `stacks/k3s/manifests/`
+- **Pending:** create TFC workspace + set variables + `terraform import` for existing VMs
+
+#### Import commands (run after `terraform init` in stacks/k3s/terraform/)
+```bash
+terraform import 'module.k3s_vms["k3s-server-01"].proxmox_virtual_environment_vm.this' pve/102
+terraform import 'module.k3s_vms["k3s-agent-01"].proxmox_virtual_environment_vm.this'  pve02/101
+terraform import 'module.k3s_vms["k3s-agent-02"].proxmox_virtual_environment_vm.this'  pve03/100
+```
+
+Template: Ubuntu 24.04 cloud-init (VMID 9000, node pve). Note: VMs use Ubuntu 24.04, LXCs use Ubuntu 22.04.
+
+#### TFC workspace variables (homelab-k3s)
+| Variable | Sensitive | Notes |
+|---|---|---|
+| `proxmox_api_token_secret` | yes | |
+| `lxc_root_password` | yes | not used, but kept for consistency |
+| `ssh_public_key` | yes | optiplex public key |
+| `proxmox_api_token_id` | no | `terraform@pve!terraform` |
+| `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
+| `template_vm_id` | no | VMID of the Ubuntu template |
+| `template_node` | no | `pve` |
+
+#### vm-base vs lxc-base
+- `lxc-base` — for services running Docker in LXC (Nextcloud, Plex, MariaDB, agent)
+- `vm-base` — for workloads needing a dedicated kernel: k3s nodes, any future VM-based stack
+
+#### Traefik manifests (stacks/k3s/manifests/)
+External service pattern: Service (no ClusterIP) + Endpoints (manual IP) + IngressRoute (Traefik).
+Apply with: `kubectl apply -f stacks/k3s/manifests/`
+
+| File | Domain | Backend |
+|---|---|---|
+| traefik-config.yaml | — | Enables Traefik dashboard |
+| traefik-ingress-internal.yaml | traefik.home.lab | Traefik dashboard :9000 |
+| nextcloud-ingress.yaml | cloud.home.lab | 192.168.1.65:8080 |
+| plex-ingress.yaml | plex.home.lab | 192.168.1.70:32400 |
+| proxmox-ingress.yaml | proxmox.home.lab | 192.168.1.90:8006 (HTTPS) |
+| technitium-ingress.yaml | dns.home.lab | 192.168.1.53:5380 |
 
 ### Plex stack — COMPLETE ✓ (2026-04-16)
 - Terraform apply — COMPLETE ✓ (LXC at 192.168.1.70)

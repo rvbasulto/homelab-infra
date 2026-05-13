@@ -1,0 +1,45 @@
+# SERVICE
+# Kubernetes object that represents the access point to Technitium inside the cluster.
+# No ClusterIP is assigned because the Endpoints point to an external IP.
+apiVersion: v1
+kind: Service
+metadata:
+  name: technitium-external
+  namespace: ingress-external  # Dedicated namespace for services external to the cluster
+spec:
+  ports:
+    - port: 5380  # Port where Technitium is running
+---
+# ENDPOINTS
+# Manually defines the real IP where the external service lives.
+# Kubernetes normally discovers Endpoints automatically (for internal pods),
+# but since Technitium lives outside the cluster, we define it manually.
+# The name MUST match the Service name so Kubernetes links them together.
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: technitium-external  # Same name as the Service so K8s associates them
+  namespace: ingress-external
+subsets:
+  - addresses:
+      - ip: 192.168.1.53  # Real IP of the Technitium server (LXC in Proxmox)
+    ports:
+      - port: 5380  # Real Technitium port
+---
+# INGRESSROUTE
+# Traefik-native object (more powerful than the standard K8s Ingress).
+# Defines routing rules: which domain goes to which service.
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: technitium
+  namespace: ingress-external
+spec:
+  entryPoints:
+    - web  # HTTP only (port 80). Technitium does not use native HTTPS.
+  routes:
+    - match: Host(`dns.home.lab`)  # When a request arrives for dns.home.lab...
+      kind: Rule
+      services:
+        - name: technitium-external  # ...forward it to the Service defined above
+          port: 5380                 # using Technitium's port

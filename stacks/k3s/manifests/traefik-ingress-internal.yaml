@@ -1,0 +1,29 @@
+# INGRESS
+# Standard Kubernetes object for HTTP routing.
+# Used here instead of IngressRoute because no special middleware or
+# advanced Traefik features are needed for this simple dashboard proxy.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik-dashboard
+  namespace: kube-system  # Namespace for internal cluster services
+spec:
+  ingressClassName: traefik  # Use Traefik as the ingress controller
+  rules:
+    - host: traefik.home.lab  # Domain to match incoming requests
+      http:
+        paths:
+          - path: /dashboard/  # Match any path under /dashboard/
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik        # Traefik's own Service in kube-system
+                port:
+                  number: 9000       # Traefik dashboard port
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik
+                port:
+                  number: 9000        
