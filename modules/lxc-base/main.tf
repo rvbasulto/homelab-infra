@@ -60,9 +60,13 @@ resource "proxmox_virtual_environment_container" "this" {
   }
 
   lifecycle {
-    # Bind mounts are configured via Ansible (editing /etc/pve/lxc/<vmid>.conf directly)
-    # because the Proxmox API rejects bind mounts for API tokens (HTTP 403).
-    # Ignoring mount_point prevents bpg from detecting them as drift and forcing LXC replacement.
-    ignore_changes = [mount_point]
+    ignore_changes = [
+      # Bind mounts are configured via Ansible (editing /etc/pve/lxc/<vmid>.conf directly)
+      # because the Proxmox API rejects bind mounts for API tokens (HTTP 403).
+      mount_point,
+      # template_file_id is only used at creation time. Ignore to prevent forced
+      # replacement when bpg resolves the template reference differently after drift detection.
+      operating_system,
+    ]
   }
 }
