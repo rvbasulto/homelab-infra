@@ -58,4 +58,11 @@ resource "proxmox_virtual_environment_container" "this" {
       volume = mount_point.value.volume
     }
   }
+
+  lifecycle {
+    # Bind mounts are configured via Ansible (editing /etc/pve/lxc/<vmid>.conf directly)
+    # because the Proxmox API rejects bind mounts for API tokens (HTTP 403).
+    # Ignoring mount_point prevents bpg from detecting them as drift and forcing LXC replacement.
+    ignore_changes = [mount_point]
+  }
 }
