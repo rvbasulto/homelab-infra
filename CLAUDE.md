@@ -12,6 +12,7 @@ stacks/
   agent/                  # Bootstrap: creates the TFC agent LXC (local execution)
   database/               # MariaDB LXC + DB/user provisioning
   media/                  # Nextcloud LXC with disk2t bind-mount
+  nextcloud/              # Nextcloud LXC with disk2t bind-mount
   plex/                   # Plex Media Server LXC with disk2t bind-mount
   k3s/                    # 3-node k3s cluster (1 server + 2 agents) across pve/pve02/pve03
     terraform/            # Provisions VMs via vm-base module
@@ -65,7 +66,7 @@ provider "proxmox" {
 |---|---|---|---|---|
 | agent | homelab-agent | pve04 | 192.168.1.50 | 106 |
 | database | homelab-database | pve04 | 192.168.1.60 | 107 |
-| media | homelab-media | pve04 | 192.168.1.65 | — |
+| nextcloud | homelab-nextcloud | pve04 | 192.168.1.65 | 108 |
 | plex | homelab-plex | pve04 | 192.168.1.70 | — |
 | k3s | homelab-k3s | pve/pve02/pve03 | see below | — |
 
@@ -104,15 +105,13 @@ provider "proxmox" {
 
 > TODO: evaluate storing the canonical value of `databases` in `group_vars/all.yml` (SOPS) as source of truth.
 
-### Media stack — COMPLETE ✓ (2026-04-14)
-- Terraform apply — COMPLETE ✓ (LXC at 192.168.1.65)
+### Nextcloud stack — COMPLETE ✓ (2026-04-14, renamed from media 2026-05-12)
+- LXC at 192.168.1.65 (VMID 108, pve04), TFC workspace `homelab-nextcloud`
 - Ansible (bind mount on pve04 + Docker + Nextcloud) — COMPLETE ✓
 - Nextcloud accessible at `http://192.168.1.65:8080` and `https://cloud.home.lab` (via Traefik at 192.168.1.97)
-- User `rvbasulto` files migrated from backup ✓
+- Users `rvbasulto` and `grdelgado` files migrated from backup ✓ (grdelgado: 316,789 files)
 
-- User `grdelgado` files migrated from backup ✓ (316,789 files, 43,703 folders scanned)
-
-#### TFC workspace variables (homelab-media)
+#### TFC workspace variables (homelab-nextcloud)
 | Variable | Sensitive | Notes |
 |---|---|---|
 | `proxmox_api_token_secret` | yes | |
@@ -181,6 +180,11 @@ Apply with: `kubectl apply -f stacks/k3s/manifests/`
 | `ssh_public_key` | yes | optiplex public key |
 | `proxmox_api_token_id` | no | `terraform@pve!terraform` |
 | `proxmox_api_url` | no | `https://192.168.1.90:8006/api2/json` |
+
+## lxc-base lifecycle notes
+
+- `mount_point` — ignored: bind mounts are configured via Ansible directly on pve04 (API rejects them with HTTP 403)
+- `operating_system` — ignored: template_file_id is only relevant at creation; bpg resolves it differently after drift detection and would force LXC replacement if not ignored
 
 ## Notes
 
