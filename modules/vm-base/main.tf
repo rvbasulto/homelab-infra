@@ -12,7 +12,18 @@ resource "proxmox_virtual_environment_vm" "this" {
 
   agent {
     enabled = true
+    type    = "virtio"
   }
+
+  operating_system {
+    type = "l26"
+  }
+
+  serial_device {
+    device = "socket"
+  }
+
+  keyboard_layout = "en-us"
 
   cpu {
     cores   = var.cores
@@ -59,6 +70,8 @@ resource "proxmox_virtual_environment_vm" "this" {
       network_device,
       disk,
       clone,
+      initialization,
+      description,
     ]
   }
 }
