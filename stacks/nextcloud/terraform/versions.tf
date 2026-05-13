@@ -4,7 +4,7 @@ terraform {
   cloud {
     organization = "rvbasulto-homelab"
     workspaces {
-      name = "homelab-media"
+      name = "homelab-nextcloud"
     }
   }
 
