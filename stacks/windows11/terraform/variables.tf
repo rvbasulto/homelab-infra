@@ -74,21 +74,15 @@ variable "storage" {
   default     = "local-lvm"
 }
 
-variable "iso_storage" {
-  description = "Proxmox storage pool for ISO files"
-  type        = string
-  default     = "local"
-}
-
 variable "windows_iso_file_id" {
   description = "Storage-qualified file ID for the Windows 11 ISO uploaded to Proxmox (e.g. local:iso/Win11_25H2_English_x64_v2.iso)"
   type        = string
 }
 
-variable "virtio_iso_url" {
-  description = "Stable VirtIO driver ISO URL"
+variable "virtio_iso_file_id" {
+  description = "Storage-qualified file ID for the VirtIO ISO uploaded to Proxmox (e.g. local:iso/virtio-win.iso)"
   type        = string
-  default     = "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
+  default     = "local:iso/virtio-win.iso"
 }
 
 variable "boot_from_iso" {

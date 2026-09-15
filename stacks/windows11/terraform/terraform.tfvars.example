@@ -11,10 +11,12 @@ cores          = 4
 memory         = 8192
 disk_size      = 80
 storage        = "local-lvm"
-iso_storage    = "local"
 network_bridge = "vmbr0"
 
 boot_from_iso = true
+
+# Upload this manually to pve03 local ISO storage before setting boot_from_iso = false.
+virtio_iso_file_id = "local:iso/virtio-win.iso"
 
 # SENSITIVE VARIABLES - define in Terraform Cloud workspace:
 # proxmox_api_token_secret = "..."

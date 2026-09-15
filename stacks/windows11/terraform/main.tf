@@ -1,11 +1,3 @@
-resource "proxmox_download_file" "virtio_win_iso" {
-  content_type = "iso"
-  datastore_id = var.iso_storage
-  node_name    = var.proxmox_node
-  file_name    = "virtio-win.iso"
-  url          = var.virtio_iso_url
-}
-
 resource "proxmox_virtual_environment_vm" "windows11" {
   node_name = var.proxmox_node
   vm_id     = var.vm_id
@@ -59,7 +51,7 @@ resource "proxmox_virtual_environment_vm" "windows11" {
   }
 
   cdrom {
-    file_id   = var.boot_from_iso ? var.windows_iso_file_id : proxmox_download_file.virtio_win_iso.id
+    file_id   = var.boot_from_iso ? var.windows_iso_file_id : var.virtio_iso_file_id
     interface = "ide2"
   }
 

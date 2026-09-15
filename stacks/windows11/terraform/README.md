@@ -17,7 +17,7 @@ proxmox_node         = "pve03"
 windows_iso_file_id = "local:iso/Win11_25H2_English_x64_v2.iso"
 ```
 
-Terraform downloads the stable VirtIO ISO automatically from:
+Later, upload the stable VirtIO ISO manually to Proxmox storage `local` on node `pve03`:
 
 https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 
@@ -27,6 +27,7 @@ https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/v
 2. Define the Proxmox variables in the workspace.
 3. Run `terraform apply` with `boot_from_iso = true`.
 4. Open the Proxmox console and install Windows 11.
-5. After installation, set `boot_from_iso = false` and apply again.
-6. In Windows, open the VirtIO CD and run `virtio-win-guest-tools.exe`.
-7. Set `qemu_agent_enabled = true` and apply once more.
+5. Upload `virtio-win.iso` to `local` on `pve03`.
+6. After installation, set `boot_from_iso = false` and apply again.
+7. In Windows, open the VirtIO CD and run `virtio-win-guest-tools.exe`.
+8. Set `qemu_agent_enabled = true` and apply once more.
