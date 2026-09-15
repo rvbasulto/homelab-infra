@@ -1,0 +1,20 @@
+proxmox_api_url      = "https://192.168.1.90:8006/api2/json"
+proxmox_api_token_id = "terraform@pve!terraform"
+proxmox_tls_insecure = true
+proxmox_node         = "pve03"
+
+hostname            = "windows11"
+vm_id               = 111
+windows_iso_file_id = "local:iso/Win11_25H2_English_x64_v2.iso"
+
+cores          = 4
+memory         = 8192
+disk_size      = 80
+storage        = "local-lvm"
+iso_storage    = "local"
+network_bridge = "vmbr0"
+
+boot_from_iso = true
+
+# SENSITIVE VARIABLES - define in Terraform Cloud workspace:
+# proxmox_api_token_secret = "..."
