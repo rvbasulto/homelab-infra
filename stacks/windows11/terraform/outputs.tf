@@ -10,5 +10,5 @@ output "vm_name" {
 
 output "virtio_iso_file_id" {
   description = "Downloaded VirtIO ISO file ID"
-  value       = proxmox_virtual_environment_download_file.virtio_win_iso.id
+  value       = proxmox_download_file.virtio_win_iso.id
 }
